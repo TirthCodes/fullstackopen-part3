@@ -1,0 +1,16 @@
+{
+  "name": "phonebook-api",
+  "version": "1.0.0",
+  "description": "An API for a phonebook app",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --watch index.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
