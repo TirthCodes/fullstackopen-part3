@@ -29,10 +29,24 @@ const persons = [
   }
 ]
 
-app.get('/api/persons', (_req, res) => 
-  res.json(persons)
-); 
+app.get('/', (_req, res) => res.send('Hello World!'))
+
+app.get('/info', (_req, res) => {
+  res.set('Content-Type', 'text/html');
+
+  const currentDate = new Date(Date.now())
+
+  const phonebookInfo = `<p>
+    Phonebook has info for ${persons.length} people
+    <br/>
+    ${currentDate.toString()}
+  </p>`
+
+  res.send(phonebookInfo);
+})
+
+app.get('/api/persons', (_req, res) => res.json(persons)); 
 
 app.listen(PORT, () => 
-  console.log(`Server running on port ${PORT}`)
+  console.log(`Server running on port ${PORT}, http://localhost:${PORT}`)
 );
