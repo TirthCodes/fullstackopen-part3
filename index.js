@@ -80,11 +80,21 @@ app.delete('/api/persons/:id', (req, res) => {
 })
 
 app.post('/api/persons', (req, res) => {
-  const body = req.body;
+  // const body = req.body;
 
   const person = {
     id: Math.floor(Math.random() * 9999),
-    ...body
+    name: req.body.name,
+    number: req.body.number,
+  }
+
+  if(!req.body.name || !req.body.number) {
+    return res.status(400).json({ error: "Name and Number are required"})
+  }
+
+  const findPersonByName = persons.find((person) => person.name === req.body.name)
+  if(findPersonByName) {
+    return res.status(409).json({error: `Person with name ${req.body.name} already exist!`});
   }
 
   persons.push(person)
