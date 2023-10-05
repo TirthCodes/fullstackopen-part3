@@ -53,10 +53,26 @@ app.get('/api/persons/:id', (req, res) => {
   const filteredPerson = persons.find((person) => person.id == id);
 
   if(filteredPerson === undefined) {
-    res.status(404).json({message: `Person with id ${id} NOT FOUND`});
+    return res.status(404).json({message: `Person with id ${id} NOT FOUND`});
   }
 
   res.json(filteredPerson)
+})
+
+app.delete('/api/persons/:id', (req, res) => {
+  const { id }  = req.params;
+
+  const filteredPersons = persons.filter((person) => person.id != id);
+  console.log(filteredPersons);
+
+  if(filteredPersons.length === persons.length) {
+    return res.status(404).json({message: `Person with id ${id} NOT FOUND`});
+  }
+
+  res.json({  
+    message: `Person with id ${id} deleted successfully!`, 
+    persons: filteredPersons
+  });
 })
 
 app.listen(PORT, () => 
