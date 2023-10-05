@@ -1,12 +1,14 @@
 import express from "express";
+import bodyParser from 'body-parser';
 
 const app = express();
 
 app.use(express.json());
+app.use(bodyParser.json());
 
 const PORT = 3001;
 
-const persons = [
+let persons = [
   { 
     "id": 1,
     "name": "Arto Hellas", 
@@ -45,14 +47,14 @@ app.get('/info', (_req, res) => {
   res.send(phonebookInfo);
 })
 
-app.get('/api/persons', (_req, res) => res.json(persons)); 
+app.get('/api/persons', (_req, res) => res.json(persons));
 
 app.get('/api/persons/:id', (req, res) => {
   const { id } = req.params;
 
   const filteredPerson = persons.find((person) => person.id == id);
 
-  if(filteredPerson === undefined) {
+  if(!filteredPerson) {
     return res.status(404).json({message: `Person with id ${id} NOT FOUND`});
   }
 
@@ -62,17 +64,31 @@ app.get('/api/persons/:id', (req, res) => {
 app.delete('/api/persons/:id', (req, res) => {
   const { id }  = req.params;
 
-  const filteredPersons = persons.filter((person) => person.id != id);
-  console.log(filteredPersons);
+  const findPersonById = persons.find((person) => person.id == id);
 
-  if(filteredPersons.length === persons.length) {
+  if(!findPersonById) {
     return res.status(404).json({message: `Person with id ${id} NOT FOUND`});
   }
 
+  const index = persons.indexOf(findPersonById);
+  const deletedPerson = persons.splice(index,1);
+
   res.json({  
     message: `Person with id ${id} deleted successfully!`, 
-    persons: filteredPersons
+    deleted: deletedPerson
   });
+})
+
+app.post('/api/persons', (req, res) => {
+  const body = req.body;
+
+  const person = {
+    id: Math.floor(Math.random() * 9999),
+    ...body
+  }
+
+  persons.push(person)
+  res.json(persons)
 })
 
 app.listen(PORT, () => 
