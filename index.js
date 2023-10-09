@@ -6,7 +6,13 @@ const app = express();
 
 app.use(express.json());
 app.use(bodyParser.json());
-app.use(morgan('tiny'))
+
+morgan.token('body', req => {
+  if(Object.keys(req.body).length){
+    return JSON.stringify(req.body)
+  }
+});
+app.use(morgan(':method :url :res[content-length] - :response-time ms :body'))
 
 const PORT = 3001;
 
