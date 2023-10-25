@@ -14,7 +14,7 @@ morgan.token('body', req => {
 });
 app.use(morgan(':method :url :res[content-length] - :response-time ms :body'))
 
-const PORT = 3001;
+const PORT = 3000;
 
 let persons = [
   { 
