@@ -13,6 +13,7 @@ morgan.token('body', req => {
   }
 });
 app.use(morgan(':method :url :res[content-length] - :response-time ms :body'))
+app.use(express.static('dist'));
 
 const PORT = 3000;
 
